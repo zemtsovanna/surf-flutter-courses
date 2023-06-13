@@ -1,20 +1,14 @@
 # Description of your result
 
-You can describe your results in any language that is convenient for you, not just English.
+
 
 ## Description
 
-[Describe what you have done]
+Программа выводит в консоль средний возраст всей техники и средний возраст техники для 50% самой старой техники из данных о международных сельскохозяйственных угодий ООО "Травка - муравка".
 
 ## How to
 
-[Describe how to run your application if there are any issues]
+Открыть файл task-01.dart, запустить программу
 
-## Problems
 
-[Describe the problems you encountered]
-
-## More
-
-[Here you can brag about what you managed to implement or do something beyond the task]
 

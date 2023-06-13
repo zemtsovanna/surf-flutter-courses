@@ -4,13 +4,11 @@ main() {
       mapBefore2010.values.expand((element) => element);
   final machineriesBefore2010 =
       territoriesBefore2010.expand((element) => element.machineries).toList();
-  print(machineriesBefore2010);
 
   // Получаем список мап после 2010.
   final territoriesAfter2010 = mapAfter2010.values.expand((element) => element);
   final machineriesAfter2010 =
       territoriesAfter2010.expand((element) => element.machineries).toList();
-  print(machineriesAfter2010);
 
   // Объединяем списки.
   final allMachineries = machineriesAfter2010 + machineriesBefore2010;
@@ -25,12 +23,10 @@ main() {
     final ageOfMachinery = thisYear - releaseDate;
     return ageOfMachinery;
   });
-  print(ages);
 
   // Сортируем [allMachineries]. Выписываем в отдельную переменную.
   final agesToList = ages.toList();
   agesToList.sort();
-  print(agesToList);
 
   // Находим средний возраст всей техники.
   double sum = 0;
@@ -38,20 +34,24 @@ main() {
     sum = sum += element;
   });
   final averageAge = sum / agesToList.length;
-  print(averageAge);
+
+// Выводим в консоль средний возраст всей техники.
+  print('Средний возраст всей техники ${averageAge.round()} лет');
 
   // Находим средний возраст старшей половины машин.
   final last = agesToList.length;
   final middle = last ~/ 2;
 
   final olderAgeToList = agesToList.getRange((middle), agesToList.length);
-  print(olderAgeToList);
   double olderSum = 0;
   olderAgeToList.forEach((element) {
     olderSum = olderSum += element;
   });
   final averageOlderAge = olderSum / olderAgeToList.length;
-  print(averageOlderAge);
+
+  // Выводим в консоль средний возраст техники для 50% самой старой техники
+  print(
+      'Средний возраст техники для 50% самой старой техники ${averageOlderAge.round()} года');
 }
 
 enum Countries { brazil, russia, turkish, spain, japan }
