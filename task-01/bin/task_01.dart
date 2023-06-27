@@ -1,4 +1,4 @@
-main() {
+void main() {
   // Получаем список мап до 2010.
   final territoriesBefore2010 =
       mapBefore2010.values.expand((element) => element);
@@ -30,9 +30,9 @@ main() {
 
   // Находим средний возраст всей техники.
   double sum = 0;
-  ages.forEach((element) {
+  for (var element in ages) {
     sum = sum += element;
-  });
+  }
   final averageAge = sum / agesToList.length;
 
 // Выводим в консоль средний возраст всей техники.
@@ -44,9 +44,9 @@ main() {
 
   final olderAgeToList = agesToList.getRange((middle), agesToList.length);
   double olderSum = 0;
-  olderAgeToList.forEach((element) {
+  for (var element in olderAgeToList) {
     olderSum = olderSum += element;
-  });
+  }
   final averageOlderAge = olderSum / olderAgeToList.length;
 
   // Выводим в консоль средний возраст техники для 50% самой старой техники
