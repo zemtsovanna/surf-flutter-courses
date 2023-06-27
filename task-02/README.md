@@ -4,17 +4,11 @@ You can describe your results in any language that is convenient for you, not ju
 
 ## Description
 
-[Describe what you have done]
+Создан класс описывающий домашнего хомяка, содержит конструкторы создающие хомяков разных видов.
 
 ## How to
 
-[Describe how to run your application if there are any issues]
+Открыть файл task_02.dart, программа не требует запуска, просто создан класс.
 
-## Problems
 
-[Describe the problems you encountered]
-
-## More
-
-[Here you can brag about what you managed to implement or do something beyond the task]
 
