@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 void main() {}
 
 enum Species { syrian, djungarian, campbell, roborovski }
