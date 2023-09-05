@@ -16,13 +16,25 @@ class PokerPlayer {
 void main() {
   final opponent = PokerPlayer();
 
-  /// Это часть первого задания. [Strategy] пока не сущестивует.
-  ///
-  /// Опишите его.
-  final Strategy fakeStrategy = (cardOnDesk, currentHand) {
-    /// Ваш код - здесь
-    throw UnimplementedError();
-  };
+  /// Вычисляет вероятность выигрыши и выводит инсайдерскую информацию в консоль.
+  fakeStrategy(cardOnDesk, currentHand) {
+    // Выводим в консоль карты оппонента.
+    print('opponent hand: $currentHand');
+
+    // Вычисляем вероятность выигрыша оппонента.
+    final length = currentHand.length;
+    int matchCount = 0;
+    currentHand.forEach((element) {
+      if (cardOnDesk.contains(element)) matchCount++;
+    });
+    final surenessInWin = matchCount / length;
+
+    // Выводим в консоль вероятность выигрыша.
+    print('surenessInWin: $surenessInWin');
+
+    // Возвращаем результат.
+    return surenessInWin;
+  }
 
   opponent.calculateProbabilities(
     cardOnDesk: ['Nine of diamonds', 'king of hearts'],
@@ -30,4 +42,8 @@ void main() {
   );
 }
 
-typedef Strategy = double Function(List<String>, List<String>);
+/// Псевдоним для функции "Стратегия".
+typedef Strategy = double Function(
+  List<String> cardOnDesk,
+  List<String> currentHand,
+);
