@@ -1,209 +1,102 @@
 void main() {
-  // Получаем список мап до 2010.
-  final territoriesBefore2010 =
-      mapBefore2010.values.expand((element) => element);
-  final machineriesBefore2010 =
-      territoriesBefore2010.expand((element) => element.machineries).toList();
+  final dog = Gamer(
+    name: 'Dog',
+    gamesList: [
+      Game(date: DateTime(2020), place: 1),
+      Game(date: DateTime(2021), place: 1),
+      Game(date: DateTime(2022), place: 4),
+    ],
+    technique: Technique.hyperTapping,
+  );
 
-  // Получаем список мап после 2010.
-  final territoriesAfter2010 = mapAfter2010.values.expand((element) => element);
-  final machineriesAfter2010 =
-      territoriesAfter2010.expand((element) => element.machineries).toList();
+  final chrisTang =
+      Commentator(name: 'Chris Tang', favoritePhrase: 'Boom Tetris For [Name]');
 
-  // Объединяем списки.
-  final allMachineries = machineriesAfter2010 + machineriesBefore2010;
+  print(dog.aboutMe());
+  print(chrisTang.aboutMe());
+}
 
-  // Удаляем повторяющуюся технику.
-  final notRepeatingMachineries = allMachineries.toSet();
+/// Максимально общая сущность.
+abstract class Man {
+  /// Имя.
+  final String name;
 
-  // Выносим в список возраст техники.
-  final ages = notRepeatingMachineries.map((e) {
-    final thisYear = DateTime.now().year;
-    final releaseDate = e.releaseDate.year;
-    final ageOfMachinery = thisYear - releaseDate;
-    return ageOfMachinery;
+  /// Конструктор.
+  Man({
+    required this.name,
+  });
+}
+
+/// Разновидность: геймер.
+class Gamer extends Man {
+  /// Игры.
+  final List<Game> gamesList;
+
+  /// Техника.
+  final Technique technique;
+
+  /// Конструктор.
+  Gamer({
+    required super.name,
+    required this.gamesList,
+    required this.technique,
   });
 
-  // Сортируем [allMachineries]. Выписываем в отдельную переменную.
-  final agesToList = ages.toList();
-  agesToList.sort();
-
-  // Находим средний возраст всей техники.
-  double sum = 0;
-  for (var element in ages) {
-    sum = sum += element;
+  /// Метод вывода информации.
+  String aboutMe() {
+    return 'My name is $name. '
+        'I played ${gamesList.length} games for now. '
+        'My favorite technique is $technique. ';
   }
-  final averageAge = sum / agesToList.length;
-
-// Выводим в консоль средний возраст всей техники.
-  print('Средний возраст всей техники ${averageAge.round()} лет');
-
-  // Находим средний возраст старшей половины машин.
-  final last = agesToList.length;
-  final middle = last ~/ 2;
-
-  final olderAgeToList = agesToList.getRange((middle), agesToList.length);
-  double olderSum = 0;
-  for (var element in olderAgeToList) {
-    olderSum = olderSum += element;
-  }
-  final averageOlderAge = olderSum / olderAgeToList.length;
-
-  // Выводим в консоль средний возраст техники для 50% самой старой техники
-  print(
-      'Средний возраст техники для 50% самой старой техники ${averageOlderAge.round()} года');
 }
 
-enum Countries { brazil, russia, turkish, spain, japan }
+/// Информация об игре.
+class Game {
+  /// Год.
+  final DateTime date;
 
-class Territory {
-  int areaInHectare;
-  List<String> crops;
-  List<AgriculturalMachinery> machineries;
+  /// Занятое место.
+  final int place;
 
-  Territory(
-    this.areaInHectare,
-    this.crops,
-    this.machineries,
-  );
+  Game({
+    required this.date,
+    required this.place,
+  });
 }
 
-class AgriculturalMachinery {
-  final String id;
-  final DateTime releaseDate;
-
-  AgriculturalMachinery(
-    this.id,
-    this.releaseDate,
-  );
-
-  // Переопределяем оператор "==", что бы сравнивать объекты по значению.
-  @override
-  bool operator ==(Object? other) {
-    if (other is! AgriculturalMachinery) return false;
-    if (other.id == id && other.releaseDate == releaseDate) return true;
-
-    return false;
-  }
+/// Техники.
+enum Technique {
+  regular,
+  hyperTapping,
+  rolling;
 
   @override
-  int get hashCode => id.hashCode ^ releaseDate.hashCode;
+  String toString() {
+    switch (this) {
+      case Technique.regular:
+        return 'regular';
+      case Technique.hyperTapping:
+        return 'hyper tapping';
+      case Technique.rolling:
+        return 'rolling';
+    }
+  }
 }
 
-final mapBefore2010 = <Countries, List<Territory>>{
-  Countries.brazil: [
-    Territory(
-      34,
-      ['Кукуруза'],
-      [
-        AgriculturalMachinery(
-          'Трактор Степан',
-          DateTime(2001),
-        ),
-        AgriculturalMachinery(
-          'Культиватор Сережа',
-          DateTime(2007),
-        ),
-      ],
-    ),
-  ],
-  Countries.russia: [
-    Territory(
-      14,
-      ['Картофель'],
-      [
-        AgriculturalMachinery(
-          'Трактор Гена',
-          DateTime(1993),
-        ),
-        AgriculturalMachinery(
-          'Гранулятор Антон',
-          DateTime(2009),
-        ),
-      ],
-    ),
-    Territory(
-      19,
-      ['Лук'],
-      [
-        AgriculturalMachinery(
-          'Трактор Гена',
-          DateTime(1993),
-        ),
-        AgriculturalMachinery(
-          'Дробилка Маша',
-          DateTime(1990),
-        ),
-      ],
-    ),
-  ],
-  Countries.turkish: [
-    Territory(
-      43,
-      ['Хмель'],
-      [
-        AgriculturalMachinery(
-          'Комбаин Василий',
-          DateTime(1998),
-        ),
-        AgriculturalMachinery(
-          'Сепаратор Марк',
-          DateTime(2005),
-        ),
-      ],
-    ),
-  ],
-};
+/// Разновидность: комментатор.
+class Commentator extends Man {
+  /// Стиль.
+  final String favoritePhrase;
 
-final mapAfter2010 = {
-  Countries.turkish: [
-    Territory(
-      22,
-      ['Чай'],
-      [
-        AgriculturalMachinery(
-          'Каток Кирилл',
-          DateTime(2018),
-        ),
-        AgriculturalMachinery(
-          'Комбаин Василий',
-          DateTime(1998),
-        ),
-      ],
-    ),
-  ],
-  Countries.japan: [
-    Territory(
-      3,
-      ['Рис'],
-      [
-        AgriculturalMachinery(
-          'Гидравлический молот Лена',
-          DateTime(2014),
-        ),
-      ],
-    ),
-  ],
-  Countries.spain: [
-    Territory(
-      29,
-      ['Арбузы'],
-      [
-        AgriculturalMachinery(
-          'Мини-погрузчик Максим',
-          DateTime(2011),
-        ),
-      ],
-    ),
-    Territory(
-      11,
-      ['Табак'],
-      [
-        AgriculturalMachinery(
-          'Окучник Саша',
-          DateTime(2010),
-        ),
-      ],
-    ),
-  ],
-};
+  /// Конструктор.
+  Commentator({
+    required super.name,
+    required this.favoritePhrase,
+  });
+
+  /// Метод вывода информации.
+  String aboutMe() {
+    return 'My name is $name. '
+        'I like to say $favoritePhrase. ';
+  }
+}
