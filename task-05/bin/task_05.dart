@@ -1,7 +1,7 @@
 void main() {
   final dog = Gamer(
     name: 'Dog',
-    gamesList: [
+    games: [
       Game(date: DateTime(2020), place: 1),
       Game(date: DateTime(2021), place: 1),
       Game(date: DateTime(2022), place: 4),
@@ -17,20 +17,20 @@ void main() {
 }
 
 /// Максимально общая сущность.
-abstract class Man {
+abstract class Human {
   /// Имя.
   final String name;
 
   /// Конструктор.
-  Man({
+  Human({
     required this.name,
   });
 }
 
 /// Разновидность: геймер.
-class Gamer extends Man {
+class Gamer extends Human {
   /// Игры.
-  final List<Game> gamesList;
+  final List<Game> games;
 
   /// Техника.
   final Technique technique;
@@ -38,14 +38,14 @@ class Gamer extends Man {
   /// Конструктор.
   Gamer({
     required super.name,
-    required this.gamesList,
+    required this.games,
     required this.technique,
   });
 
   /// Метод вывода информации.
   String aboutMe() {
     return 'My name is $name. '
-        'I played ${gamesList.length} games for now. '
+        'I played ${games.length} games for now. '
         'My favorite technique is $technique. ';
   }
 }
@@ -84,7 +84,7 @@ enum Technique {
 }
 
 /// Разновидность: комментатор.
-class Commentator extends Man {
+class Commentator extends Human {
   /// Стиль.
   final String favoritePhrase;
 
