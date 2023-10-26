@@ -49,6 +49,7 @@ class Hamster {
     required this.cheekPouch,
   }) : species = Species.roborovski;
 
+  // ignore: unused_element
   void _runOnWheel() {
     print('Хомяк бежит в колесе');
     _isHungry = true;
@@ -63,14 +64,17 @@ class Hamster {
     }
   }
 
+  // ignore: unused_element
   void _drink() {
     print('Хомяк пьет');
   }
 
+  // ignore: unused_element
   void _sleep() {
     print('Хомяк спит');
   }
 
+  // ignore: unused_element
   void _bath() {
     print('Хомяк купается в песке');
   }
