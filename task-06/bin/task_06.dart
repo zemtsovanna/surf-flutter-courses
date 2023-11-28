@@ -1,14 +1,16 @@
-import 'dart:math';
-
 main() {
   final products = parseArticles(articles);
 
   print(
-    applyFilter(products, RandomFilter()),
+    applyFilter(products, CategoryFilter('хлеб')),
   );
 
   print(
-    applyFilter(products, IndexFilter(1)),
+    applyFilter(products, PriceFilter(50)),
+  );
+
+  print(
+    applyFilter(products, QuantityFilter(53)),
   );
 }
 
@@ -16,27 +18,39 @@ abstract interface class Filter {
   bool apply(ProductModel product);
 }
 
-class RandomFilter extends Filter {
+class CategoryFilter extends Filter {
+  final String category;
+
+  CategoryFilter(this.category);
   @override
   bool apply(ProductModel product) {
-    return Random().nextBool();
+    return product.category != category;
   }
 }
 
-class IndexFilter extends Filter {
-  final int index;
+class PriceFilter extends Filter {
+  final int price;
 
-  IndexFilter(this.index);
+  PriceFilter(this.price);
   @override
   bool apply(ProductModel product) {
-    return product.id == index;
+    return product.price > price;
+  }
+}
+
+class QuantityFilter extends Filter {
+  final int quantity;
+
+  QuantityFilter(this.quantity);
+  @override
+  bool apply(ProductModel product) {
+    return product.quantity >= quantity;
   }
 }
 
 List<ProductModel> applyFilter(List<ProductModel> products, Filter filter) {
   return [...products]..removeWhere((element) => filter.apply(element));
 }
-// ----------------------------------------------------------------------------
 
 List<ProductModel> parseArticles(String articles) {
   final tempList = articles.split('\n');
@@ -75,7 +89,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return '$id $category  $name  $price $quantity';
+    return '$id $category $name $price рублей $quantity шт';
   }
 
   ProductModel({
