@@ -1,40 +1,60 @@
-import 'package:surf_dart_courses_template/raw_data.dart';
 import 'package:surf_dart_courses_template/raw_product_item.dart';
 
-// {
-//   'Растительная пища': {
-//     'Фрукты': ['Персик', 'Груша'],
-//     'Овощи': ['Морковь'],
-//     'Крупы': ['Гречка'],
-//   },
-//   'Молочные продукты': {
-//     'Напитки': ['Молоко', 'Кефир'],
-//     'Сыры': ['Гауда', 'Маасдам'],
-//   },
-//   'Мясо': {
-//     'Птица': ['Курица'],
-//     'Не птица': ['Свинина'],
-//   },
-// }
-Map<String, Map<String, List<String>>> doSomething(List<RawProductItem> data) {
-  final categories = data.map((e) => e.categoryName).toSet();
-
+/// Вывод товаров.
+///
+/// Где [rawData] - исходный список продуктов,
+/// [todayDate] - дата, когда мы проверяем просрочку,
+/// [inStockOnly] - не выводить товары, которых нет в наличии.
+///
+/// Фильтрует товары и выводит их в формате:
+/// ```dart
+/// {
+///   category: {
+///     subcategory: [product.name, /*...*/,],
+///     /*...*/,
+///   },
+///   /*...*/
+/// }
+/// ```
+Map<String, Map<String, List<String>>> prepareData(
+  List<RawProductItem> rawData, {
+  required DateTime todayDate,
+  required bool inStockOnly,
+}) {
   final result = <String, Map<String, List<String>>>{};
-
+  // Находим список всех доступных категорий.
+  final categories = rawData.map((e) => e.categoryName).toSet();
+  // Проходимся по каждой категории.
   for (final category in categories) {
-    final listByCategory =
-        data.where((rawElement) => rawElement.categoryName == category).toList();
-
-
-    // for (final subcategory in subcategories) {
-    //   result.addAll(
-    //     {
-    //       category: {
-    //         subcategory: [],
-    //       },
-    //     },
-    //   );
-    // }
+    // Для каждой категории создаём пустую запись.
+    result[category] = {};
+    // Фильтруем продукты из категории.
+    final productsByCategory =
+        rawData.where((rawElement) => rawElement.categoryName == category);
+    // Находим список всех доступных подкатегорий.
+    final subcategories =
+        productsByCategory.map((e) => e.subcategoryName).toSet();
+    // Проходимся по каждой подкатегории.
+    for (final subcategory in subcategories) {
+      // Фильтруем продукты из текущей подкатегории.
+      final productsBySubcategory = productsByCategory.where(
+        (product) {
+          final inStock = inStockOnly ? product.qty > 0 : true;
+          final isExpired = product.expirationDate.millisecondsSinceEpoch <
+              todayDate.millisecondsSinceEpoch;
+          return product.subcategoryName == subcategory &&
+              !isExpired &&
+              inStock;
+        },
+      );
+      // Если в подкатегории нет продуктов - пропускаем.
+      if (productsBySubcategory.isEmpty) continue;
+      // Заполняем ранее созданную запись для категории.
+      result[category]![subcategory] =
+          productsBySubcategory.map((e) => e.name).toList();
+    }
+    // Удаляем категории, для которых не нашлось наполнения.
+    result.removeWhere((key, value) => value.isEmpty);
   }
   return result;
 }
