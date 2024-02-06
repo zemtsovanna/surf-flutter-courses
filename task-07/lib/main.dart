@@ -58,3 +58,24 @@ Map<String, Map<String, List<String>>> prepareData(
   }
   return result;
 }
+
+/// Альтернативное решение.
+// TODO(zemtsova): добавь условия на проверку просрочки.
+Map<String, Map<String, List<String>>> convertToMap(
+  List<RawProductItem> items,
+) {
+  return items.fold<Map<String, Map<String, List<String>>>>({}, (map, item) {
+    /// Проверка на количество, ещё по условию сюда дату на просрочку товара надо проверить
+    if (item.qty > 0) {
+      if (!map.containsKey(item.categoryName)) {
+        map[item.categoryName] = {};
+      }
+      if (!map[item.categoryName]!.containsKey(item.subcategoryName)) {
+        map[item.categoryName]![item.subcategoryName] = [];
+      }
+      map[item.categoryName]![item.subcategoryName]!.add(item.name);
+    }
+
+    return map;
+  });
+}
