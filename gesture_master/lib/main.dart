@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
           ),
           Positioned.fill(
             child: GestureDetector(
-              // TODO(zemtsova): сделай onVerticalDragUpdate по примеру _onVerticalDrag.
+              onHorizontalDragUpdate: _onHorizontalDrag,
               onVerticalDragUpdate: _onVerticalDrag,
               onTap: onTap,
             ),
@@ -88,6 +88,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       print('onVerticalDrag: ${details.delta.dy}');
       yPosition = yPosition + details.delta.dy;
+    });
+  }
+
+  void _onHorizontalDrag(details) {
+    setState(() {
+      print('onHorizontalDrag: ${details.delta.dx}');
+      xPosition = xPosition + details.delta.dx;
     });
   }
 }
