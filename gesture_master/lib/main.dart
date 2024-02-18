@@ -29,7 +29,22 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  )..repeat(reverse: true);
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.elasticOut,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   static const _colors = [
     Colors.amber,
     Colors.black,
@@ -57,18 +72,22 @@ class _HomePageState extends State<HomePage> {
           Positioned(
             left: xPosition,
             top: yPosition,
-            child: AnimatedContainer(
-              width: 50,
-              height: 50,
-              duration: _duration,
-              color: _color,
+            child: RotationTransition(
+              turns: _animation,
+              child: AnimatedContainer(
+                width: 50,
+                height: 50,
+                duration: _duration,
+                color: _color,
+              ),
             ),
           ),
           Positioned.fill(
             child: GestureDetector(
               onHorizontalDragUpdate: _onHorizontalDrag,
               onVerticalDragUpdate: _onVerticalDrag,
-              onTap: onTap,
+              onTap: _onTap,
+              onLongPress: _onLongPress,
             ),
           ),
         ],
@@ -76,7 +95,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onTap() {
+  void _onLongPress() {}
+
+  void _onTap() {
     setState(() {
       final randomColorIndex = Random().nextInt(_colors.length);
       _color = _colors[randomColorIndex];
