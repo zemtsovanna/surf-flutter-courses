@@ -78,7 +78,6 @@ class _HomePageState extends State<HomePage> {
 
   void onTap() {
     setState(() {
-      print('onTap');
       final randomColorIndex = Random().nextInt(_colors.length);
       _color = _colors[randomColorIndex];
     });
@@ -86,14 +85,12 @@ class _HomePageState extends State<HomePage> {
 
   void _onVerticalDrag(details) {
     setState(() {
-      print('onVerticalDrag: ${details.delta.dy}');
       yPosition = yPosition + details.delta.dy;
     });
   }
 
   void _onHorizontalDrag(details) {
     setState(() {
-      print('onHorizontalDrag: ${details.delta.dx}');
       xPosition = xPosition + details.delta.dx;
     });
   }
