@@ -33,10 +33,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(seconds: 2),
     vsync: this,
-  )..repeat(reverse: true);
+  );
   late final Animation<double> _animation = CurvedAnimation(
     parent: _controller,
-    curve: Curves.elasticOut,
+    curve: Curves.linear,
   );
 
   @override
@@ -95,7 +95,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  void _onLongPress() {}
+  void _onLongPress() {
+    _controller.animateTo(
+      (_controller.value + 0.1) % 1,
+    );
+  }
 
   void _onTap() {
     setState(() {
